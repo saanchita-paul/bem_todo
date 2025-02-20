@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->string('title');
             $table->text('description')->nullable();
-            $table->dateTime('reminder_at');
+            $table->timestamp('reminder_at');
             $table->boolean('email_notification_sent')->default(false);
             $table->timestamps();
             $table->softDeletes();
