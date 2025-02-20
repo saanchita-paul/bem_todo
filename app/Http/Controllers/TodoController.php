@@ -2,19 +2,40 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\TodoRequest;
 use App\Models\Todo;
+use App\Services\Todo\GetAllTodosService;
+use App\Services\Todo\CreateTodoService;
+use App\Services\Todo\GetTodoByIdService;
+use App\Services\Todo\UpdateTodoService;
+use App\Services\Todo\DeleteTodoService;
 
 class TodoController extends Controller
 {
-    public function __construct()
-    {
+    protected GetAllTodosService $getAllTodosService;
+    protected CreateTodoService $createTodoService;
+    protected GetTodoByIdService $getTodoByIdService;
+    protected UpdateTodoService $updateTodoService;
+    protected DeleteTodoService $deleteTodoService;
+
+    public function __construct(
+        GetAllTodosService $getAllTodosService,
+        CreateTodoService $createTodoService,
+        GetTodoByIdService $getTodoByIdService,
+        UpdateTodoService $updateTodoService,
+        DeleteTodoService $deleteTodoService
+    ) {
         $this->middleware('auth');
+        $this->getAllTodosService = $getAllTodosService;
+        $this->createTodoService = $createTodoService;
+        $this->getTodoByIdService = $getTodoByIdService;
+        $this->updateTodoService = $updateTodoService;
+        $this->deleteTodoService = $deleteTodoService;
     }
 
     public function index()
     {
-        $todos = auth()->user()->todos->sortByDesc('created_at');
+        $todos = $this->getAllTodosService->execute();
         return view('todos.index', compact('todos'));
     }
 
@@ -23,20 +44,16 @@ class TodoController extends Controller
         return view('todos.create');
     }
 
-    public function store(Request $request)
+    public function store(TodoRequest $request)
     {
-        $request->validate([
-            'title' => 'required',
-            'reminder_at' => 'required|date',
-        ]);
-
-        auth()->user()->todos()->create($request->all());
+        $this->createTodoService->execute($request->validated());
         return redirect()->route('todos.index');
     }
 
     public function show(Todo $todo)
     {
         $this->authorize('view', $todo);
+        $todo = $this->getTodoByIdService->execute($todo);
         return view('todos.show', compact('todo'));
     }
 
@@ -46,23 +63,17 @@ class TodoController extends Controller
         return view('todos.edit', compact('todo'));
     }
 
-    public function update(Request $request, Todo $todo)
+    public function update(TodoRequest $request, Todo $todo)
     {
         $this->authorize('update', $todo);
-
-        $request->validate([
-            'title' => 'required',
-            'reminder_at' => 'required|date',
-        ]);
-
-        $todo->update($request->all());
+        $this->updateTodoService->execute($todo, $request->validated());
         return redirect()->route('todos.index');
     }
 
     public function destroy(Todo $todo)
     {
         $this->authorize('delete', $todo);
-        $todo->delete();
+        $this->deleteTodoService->execute($todo);
         return redirect()->route('todos.index');
     }
 }
