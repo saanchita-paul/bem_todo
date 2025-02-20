@@ -10,6 +10,7 @@ This project is a simple Todo List application built with Laravel 11, featuring 
 - **Email Logging** to keep track of all emails sent through the application.
 - **Notification Tags** for todos after email notifications are sent.
 - Utilizes **Route Model Binding**, **Scheduler**, and **Queue** for optimal performance.
+- Laravel Telescope installed for debugging and tracking application requests, jobs, and emails.
 
 ## Installation
 
@@ -72,7 +73,28 @@ php artisan serve
 
 ```
 
+### Debugging with Laravel Telescope
+Laravel Telescope is installed and can be used to monitor application events such as queries, jobs, and emails.
 
+- To install and publish Telescope assets:
+
+```
+php artisan telescope:install
+
+```
+- Access Telescope via:
+
+```
+http://your-app-url/telescope
+
+```
+- Ensure debugging is enabled in .env
+
+```
+
+TELESCOPE_ENABLED=true
+
+```
 ### Usage
 - Create a Todo: Visit /todos/create to add a new todo with a deadline.
 - View Todos: Navigate to /todos to see all todos.
@@ -92,7 +114,6 @@ php artisan schedule:work
 php artisan queue:work
 
 ```
-
 
 
 ## API Usage
