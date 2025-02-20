@@ -81,7 +81,7 @@ npm run dev``
 ## API Usage
 The project fetches titles from https://jsonplaceholder.typicode.com/posts for including in the reminder emails.
 
-k
+
 ## Future Enhancement: 
 
 ### Pagination for Todo List
