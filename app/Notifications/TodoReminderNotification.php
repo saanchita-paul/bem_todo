@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Services\CsvExportService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -28,14 +29,11 @@ class TodoReminderNotification extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         $fileName = 'posts_' . time() . '.csv';
-        $filePath = storage_path('app/' . $fileName);
+        $data = array_map(function ($post) {
+            return [$post['id'], $post['title'], $post['body']];
+        }, $this->posts);
 
-        $file = fopen($filePath, 'w');
-        fputcsv($file, ['ID', 'Title', 'Body']);
-        foreach ($this->posts as $post) {
-            fputcsv($file, [$post['id'], $post['title'], $post['body']]);
-        }
-        fclose($file);
+        $filePath = CsvExportService::generateCsv($data, ['ID', 'Title', 'Body'], $fileName);
 
         return (new MailMessage)
             ->subject('Todo Reminder: ' . $this->todo->title)
