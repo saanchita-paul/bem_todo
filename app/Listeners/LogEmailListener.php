@@ -2,7 +2,7 @@
 
 namespace App\Listeners;
 
-use App\Models\EmailLog;
+use App\Services\EmailLogService;
 use Illuminate\Mail\Events\MessageSent;
 use Illuminate\Mail\SentMessage;
 use Illuminate\Notifications\Events\NotificationSent;
@@ -13,9 +13,11 @@ class LogEmailListener
     /**
      * Create the event listener.
      */
-    public function __construct()
+    protected EmailLogService $emailLogService;
+
+    public function __construct(EmailLogService $emailLogService)
     {
-        //
+        $this->emailLogService = $emailLogService;
     }
 
     /**
@@ -27,24 +29,6 @@ class LogEmailListener
             return;
         }
 
-        $data = $event->data ?? [];
-        $notifiable = $data['__laravel_notification'] ?? null;
-        $mailable = $data['__laravel_mailable'] ?? null;
-
-        $recipient = $event->sent->getOriginalMessage()->getTo()[0]->getAddress() ?? null;
-
-
-        $subject = $event->sent->getOriginalMessage()->getSubject() ?? null;
-
-        $body = $event->sent->getOriginalMessage()->getHtmlBody() ?? $event->sent->getOriginalMessage()->getTextBody() ?? null;
-
-        if ($recipient && $subject && $body) {
-            EmailLog::create([
-                'recipient' => $recipient,
-                'subject' => $subject,
-                'body' => $body,
-                'notification_type' => $notifiable ? 'notification' : ($mailable ? 'mailable' : 'unknown'),
-            ]);
-        }
+        $this->emailLogService->logEmail($event->sent, $event->data ?? []);
     }
 }
