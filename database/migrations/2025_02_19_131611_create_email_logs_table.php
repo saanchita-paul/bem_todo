@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('recipient');
             $table->string('subject');
             $table->text('body');
+            $table->string('notification_type')->nullable();
             $table->timestamps();
         });
     }

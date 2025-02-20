@@ -9,6 +9,7 @@ class EmailLog extends Model
     protected $fillable = [
         'recipient',
         'subject',
-        'body'
+        'body',
+        'notification_type'
     ];
 }
