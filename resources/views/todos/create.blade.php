@@ -1,13 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Todo</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
-<div class="container mt-5">
+@extends('layouts.app')
+
+@section('content')
+<div class="card container m-auto">
     <h1>Create New Todo</h1>
     <form action="{{ route('todos.store') }}" method="POST">
         @csrf
@@ -24,7 +18,8 @@
             <input type="datetime-local" class="form-control" id="reminder_at" name="reminder_at" required>
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
+        <a href="{{ route('home') }}" class="btn btn-secondary">Cancel</a>
     </form>
 </div>
-</body>
-</html>
+@endsection
+

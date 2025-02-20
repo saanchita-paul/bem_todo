@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\Todo\GetAllTodosService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -11,8 +13,11 @@ class HomeController extends Controller
      *
      * @return void
      */
-    public function __construct()
+    protected GetAllTodosService $getAllTodosService;
+
+    public function __construct(GetAllTodosService $getAllTodosService,)
     {
+        $this->getAllTodosService = $getAllTodosService;
         $this->middleware('auth');
     }
 
@@ -23,6 +28,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $todos = $this->getAllTodosService->execute();
+        return view('home', compact('todos'));
     }
 }

@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-12">
             <div class="card">
                 <div class="card-header">{{ __('Dashboard') }}</div>
 
@@ -13,11 +13,13 @@
                             {{ session('status') }}
                         </div>
                     @endif
-
                     {{ __('You are logged in!') }}
-                        <a href="{{ route('todos.index') }}" class="btn btn-primary float-end">Go to Todo List</a>
                 </div>
             </div>
+            <div class="card mt-5">
+                @include('todos.index')
+            </div>
+
         </div>
     </div>
 </div>

@@ -1,0 +1,28 @@
+/* Style for wrapping text in table cells */
+.table td, .table th {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px; /* Adjust as necessary */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .table td, .table th {
+        max-width: 100px; /* Reduce width for smaller screens */
+        font-size: smaller;
+    }
+    /* Adjust action buttons */
+    .table td:last-child {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+    }
+    .table td:last-child a, .table td:last-child form button {
+        margin: 2px;
+    }
+}
+
+.card.container.m-auto {
+    padding: 25px;
+}
