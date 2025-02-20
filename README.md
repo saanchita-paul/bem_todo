@@ -72,6 +72,18 @@ npm run dev
 php artisan serve
 
 ```
+### Login with Seeded User
+If you do not want to register then run the seeder:
+
+```
+php artisan db:seed --class=UserSeeder
+```
+
+Now, you can log in with:
+```
+Email: admin@bemgroup.agency
+Password: password
+```
 
 ### Debugging with Laravel Telescope
 Laravel Telescope is installed and can be used to monitor application events such as queries, jobs, and emails.
