@@ -47,19 +47,30 @@ MAIL_ENCRYPTION=tls
 
 4. Generate Application Key
 
-``php artisan key:generate``
+```
+php artisan key:generate
+
+```
 
 5. Run Migrations
-``php artisan migrate``
+
+```
+php artisan migrate 
+```
 
 6. Install Frontend Dependencies
 
-``npm install
-npm run dev``
+``` 
+npm install
+npm run dev
+```
 
 7. Start Development Server
 
-``php artisan serve``
+``` 
+php artisan serve
+
+```
 
 
 ### Usage
@@ -71,10 +82,16 @@ npm run dev``
 
 ### Scheduler and Queue
 - The scheduler for email reminders is set within routes\console.php. Run the scheduler command:
-``php artisan schedule:work``
+``` 
+php artisan schedule:work
+
+```
 
 - For queue processing, you'll need to run:
-``php artisan queue:work``
+``` 
+php artisan queue:work
+
+```
 
 
 
